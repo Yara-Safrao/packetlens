@@ -5,20 +5,20 @@ from scapy.all import DNSQR, IP, TCP, UDP, rdpcap
 
 
 def entropy(text):
-    """Mede quão 'aleatório' é um texto (mais alto = mais aleatório)."""
+    """ Mesure how random a text higher = more random """
     counts = Counter(text)
     total = len(text)
     return -sum((n / total) * math.log2(n / total) for n in counts.values())
 
 
 def looks_random(domain):
-    """Heurística: o primeiro segmento do domínio é longo e parece aleatório."""
+    """Heuristic: The first segment of the domain is long and appears random."""
     label = domain.split(".")[0]
     return len(label) >= 10 and entropy(label) > 3.2
 
 
 def analyze(path):
-    """Lê um .pcap e devolve protocolos, consultas DNS e conexões TCP."""
+    """Reads a .pcap file and returns protocols, DNS queries, and TCP connections."""
     packets = rdpcap(path)
     protocols = Counter()
     dns_queries = []
